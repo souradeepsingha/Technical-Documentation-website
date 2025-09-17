@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Google Sign In</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+    .card {
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    button {
+      background: #4285F4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #357ae8;
+    }
+  </style>
+</head>
+<body>
+  <body style="margin:0; font-family:Arial, sans-serif; background-color:#2e0066;">
+
+  <!-- Centered login box -->
+  <div style="display:flex; justify-content:center; align-items:center; height:90vh;">
+    <div style="background-color:#2e0066; padding:40px; border-radius:8px; width:350px; text-align:center; ">
+
+      <!-- Logo text -->
+      <h2 style="margin:0; margin-bottom:25px; font-weight:bold; font-size:22px; color:#ffffff;">precisely</h2>
+
+      <!-- Sign in title -->
+     
+
+      <!-- Username input
+      <div style="text-align:left; margin-bottom:20px;">
+        <label for="username" style="font-size:14px; font-weight:normal; color:#000;">Username</label>
+        <input type="text" id="username" name="username" 
+          style="width:100%; padding:10px; border:2px solid #7a1fa2; border-radius:4px; font-size:14px; margin-top:5px;">
+      </div>
+
+     
+      <button style="background-color:#7a1fa2; color:white; border:none; padding:10px 20px; border-radius:20px; font-size:14px; cursor:pointer;">
+        Next
+      </button> -->
+  <div class="card">
+     <h3 style="margin:0; margin-bottom:20px; font-size:20px; font-weight:bold; color:#000;">Sign In</h3>
+    <!-- <h2>Firebase Google Sign In</h2> -->
+    <button id="googleSignInBtn">Sign in with Google</button>
+      <div style="margin-top:20px;">
+        <a href="#" style="font-size:14px; color:black; text-decoration:underline;">Support</a>
+      </div>
+  </div>
+      <!-- Support link -->
+    
+    </div>
+  </div>
+
+  <!-- Footer
+  <footer style="background-color:#f3f3f3; text-align:center; padding:15px; font-size:13px; color:#000;">
+    <div style="margin-bottom:8px;">
+      <span style="font-weight:bold; color:#7a1fa2;">precisely</span> © 2021, 2025 Precisely
+    </div>
+    <div>
+      <a href="#" style="color:#7a1fa2; text-decoration:none; margin:0 10px;">Legal</a>
+      <a href="#" style="color:#7a1fa2; text-decoration:none; margin:0 10px;">Privacy Policy</a>
+      <a href="#" style="color:#7a1fa2; text-decoration:none; margin:0 10px;">Terms of Use</a>
+      <a href="#" style="color:#7a1fa2; text-decoration:none; margin:0 10px;">Contact Us</a>
+    </div>
+  </footer> -->
+
+</body>
+
+
+
+  <!-- Firebase v8 SDK (Global firebase object) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4tVXiipMH4YI0E2yvnIbEm4bpYIM1pdU",
+      authDomain: "booklibrarytest-6b377.firebaseapp.com",
+      databaseURL: "https://booklibrarytest-6b377-default-rtdb.firebaseio.com",
+      projectId: "booklibrarytest-6b377",
+      storageBucket: "booklibrarytest-6b377.appspot.com",
+      messagingSenderId: "1008516508937",
+      appId: "1:1008516508937:web:52f60b4587cd5708fe77d8",
+      measurementId: "G-42DH0K3CK6"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // Sign in button
+    document.getElementById("googleSignInBtn").addEventListener("click", () => {
+      auth.signInWithPopup(provider)
+        .then(async (result) => {
+          const user = result.user;
+          alert("Welcome " + user.displayName);
+
+          // Get ID Token
+          const idToken = await user.getIdToken();
+
+          // Send token to your Node.js server
+          fetch("/profile", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${idToken}`
+            }
+          })
+          .then(res => res.json())
+          .then(data => console.log("Server response:", data))
+          .catch(err => console.error("Server error:", err));
+        })
+        .catch((error) => {
+          console.error("Sign-in error:", error);
+          alert("Error: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>

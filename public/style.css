@@ -1,0 +1,164 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Top Banner */
+.top-banner {
+  background: #7a3dc0;
+  color: white;
+  text-align: center;
+  padding: 8px;
+}
+.top-banner a { color: yellow; text-decoration: underline; }
+
+/* Navbar */
+.navbar {
+  background: #4b0082;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  align-items: center;
+}
+.logo { font-size: 24px; font-weight: bold; }
+.btn {
+  margin-left: 10px;
+  background: white;
+  color: #4b0082;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #6a0dad, #4b0082);
+  color: white;
+}
+.search-box {
+  margin-top: 20px;
+  display: inline-flex;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.search-box input {
+  border: none;
+  padding: 10px;
+  outline: none;
+  width: 300px;
+}
+.filter-btn {
+  background: #eee;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+.lang-tag {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 4px 12px;
+  background: #eee;
+  color: #4b0082;
+  border-radius: 12px;
+}
+
+/* Categories */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 40px;
+  background: white;
+}
+.card {
+  border-radius: 10px;
+  padding: 20px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.card h3 {
+  color: #4b0082;
+  margin-bottom: 10px;
+}
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+.card li {
+  margin: 6px 0;
+}
+.card a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+
+.resources {
+  width: 100%;            /* take full screen width */
+  max-width: 100%;        /* remove restriction */
+  margin: 0;              /* remove auto-centering */
+  background: #e1e1e1;
+  padding: 30px;          /* keeps inner spacing */
+  border-radius: 0px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-sizing: border-box; /* makes sure padding doesn’t add extra width */
+}
+
+
+    .resources h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .resource-item {
+      background: #fafafa;
+      padding: 20px;
+      border-left: 4px solid #6a0dad;
+      border-radius: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .resource-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .resource-icon {
+      font-size: 24px;
+      color: #6a0dad;
+      margin-bottom: 10px;
+    }
+
+    .resource-item h3 {
+      font-size: 18px;
+      margin: 0 0 8px;
+      color: #333;
+    }
+
+    .resource-item p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+ .card ul li a {
+    text-decoration: none;   /* remove underline by default */
+    color: #4d9dff;             /* link color */
+    transition: all 0.3s ease;
+  }
+
+  .card ul li a:hover {
+    text-decoration: underline;  /* underline only on hover */
+  }

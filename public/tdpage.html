@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post Details</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f9;
+      color: #333;
+    }
+
+    header {
+      background: #5c2d91; /* Purple header like Precisely */
+      color: white;
+      padding: 15px 30px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .post {
+      padding: 20px;
+      border-left: 5px solid #5c2d91;
+      background: #fafafa;
+      border-radius: 8px;
+    }
+
+    .heading {
+      font-size: 26px;
+      font-weight: 600;
+      color: #5c2d91;
+      margin-bottom: 10px;
+    }
+
+    .summary {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .timestamp {
+      font-size: 13px;
+      color: #777;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>📄 Post Details</header>
+
+  <main>
+    <div id="post">Loading...</div>
+  </main>
+
+  <footer>
+    © 2025 Post Viewer | All Rights Reserved
+  </footer>
+
+  <!-- Firebase v8 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <script>
+    // ✅ Firebase Config (same as yours)
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4tVXiipMH4YI0E2yvnIbEm4bpYIM1pdU",
+      authDomain: "booklibrarytest-6b377.firebaseapp.com",
+      databaseURL: "https://booklibrarytest-6b377-default-rtdb.firebaseio.com",
+      projectId: "booklibrarytest-6b377",
+      storageBucket: "booklibrarytest-6b377.appspot.com",
+      messagingSenderId: "1008516508937",
+      appId: "1:1008516508937:web:52f60b4587cd5708fe77d8",
+      measurementId: "G-42DH0K3CK6"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Get query parameter
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Fetch & display post
+    function fetchPost() {
+      const heading = getQueryParam("post");
+      const postDiv = document.getElementById("post");
+
+      if (!heading) {
+        postDiv.innerHTML = "<p>⚠️ No post specified.</p>";
+        return;
+      }
+
+      database.ref("posts/" + heading).once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          const post = snapshot.val();
+          postDiv.innerHTML = `
+            <div class="post">
+              <div class="heading">${post.heading}</div>
+              <div class="summary">${post.summary}</div>
+              <div class="timestamp">Last updated: ${post.timestamp}</div>
+            </div>
+          `;
+        } else {
+          postDiv.innerHTML = "<p>❌ Post not found.</p>";
+        }
+      });
+    }
+
+    window.onload = fetchPost;
+  </script>
+</body>
+</html>

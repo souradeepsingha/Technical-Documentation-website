@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f9;
+
+      /* ✅ Center search box */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .search-box {
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-btn {
+      background: #5c2d91;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: none;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .suggestion-item {
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background: #f0f0f5;
+    }
+  </style>
+</head>
+<body>
+  <!-- 🔍 Search Bar -->
+  <div class="search-box">
+    <button class="filter-btn">FILTERS ▼</button>
+    <input type="text" id="searchInput" placeholder="Search documentation">
+    <div class="suggestions" id="suggestions"></div>
+  </div>
+
+  <!-- Firebase v8 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <script>
+    // ✅ Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4tVXiipMH4YI0E2yvnIbEm4bpYIM1pdU",
+      authDomain: "booklibrarytest-6b377.firebaseapp.com",
+      databaseURL: "https://booklibrarytest-6b377-default-rtdb.firebaseio.com",
+      projectId: "booklibrarytest-6b377",
+      storageBucket: "booklibrarytest-6b377.appspot.com",
+      messagingSenderId: "1008516508937",
+      appId: "1:1008516508937:web:52f60b4587cd5708fe77d8",
+      measurementId: "G-42DH0K3CK6"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let posts = [];
+
+    // 🔹 Fetch all posts once on page load
+    database.ref("posts").once("value", (snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach(child => {
+          posts.push(child.val()); // { heading, summary, timestamp }
+        });
+      }
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    const suggestionsDiv = document.getElementById("suggestions");
+
+    // ✅ Auto-focus input when page loads
+    window.onload = () => {
+      searchInput.focus();
+    };
+
+    // 🔎 Search input listener
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      suggestionsDiv.innerHTML = "";
+
+      if (query.trim() === "") {
+        suggestionsDiv.style.display = "none";
+        return;
+      }
+
+      // Filter posts by heading
+      const filtered = posts.filter(post =>
+        post.heading.toLowerCase().includes(query)
+      );
+
+      if (filtered.length > 0) {
+        filtered.forEach(post => {
+          const div = document.createElement("div");
+          div.classList.add("suggestion-item");
+          div.textContent = post.heading;
+          div.onclick = () => {
+            window.location.href = `tdpage.html?post=${encodeURIComponent(post.heading)}`;
+          };
+          suggestionsDiv.appendChild(div);
+        });
+        suggestionsDiv.style.display = "block";
+      } else {
+        suggestionsDiv.style.display = "none";
+      }
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-box")) {
+        suggestionsDiv.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
